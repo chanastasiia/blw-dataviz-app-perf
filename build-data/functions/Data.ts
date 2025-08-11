@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { decompressSync, strFromU8 } from "fflate";
-import type { RawData } from "./types.ts";
+import type { RawData, Point } from "./types.ts";
 import lodash from "lodash";
 function getNonEmptyVals(
   columnNameStrings: string[],
@@ -49,7 +49,7 @@ export default class Data {
     const rawData = JSON.parse(
       strFromU8(decompressSync(fs.readFileSync(filePathString)))
     ) as RawData;
-    //array of column names in this.colums
+    //array of column names in this.columns
     this.columns = rawData.columns;
     //array of data rows in this.data
     this.data = rawData.data;
@@ -82,15 +82,12 @@ export default class Data {
       );
     }
     //initialize the nonempty wave values
-    this.nonemptyWaveValues = this.data
-      .map((row) => {
-        if (this.utilityColumns.wave && row[this.utilityColumns.wave]) {
-          return row[this.utilityColumns.wave];
-        } else {
-          return null;
-        }
-      })
-      .filter((val) => !this.emptyValues.includes(val)) as number[];
+    this.nonemptyWaveValues = getNonEmptyVals(
+      ["wave"],
+      this.columns,
+      this.data,
+      this.emptyValues
+    ) as number[];
     //warn if there are not enough waves
     if (this.nonemptyWaveValues.length < 2) {
       console.log(
@@ -109,25 +106,6 @@ export default class Data {
         this.nonemptyImpResponses.length
       );
     }
-  }
-  setEmptyValues(emptyVals: (string | number | null | undefined)[]) {
-    this.emptyValues = emptyVals;
-  }
-  setUtilityColumns(utilityColNames: string[]) {
-    this.utilityColumnNames = utilityColNames;
-    this.utilityColumns = Object.fromEntries(
-      utilityColNames
-        .map((cn) => [cn, this.columns.findIndex((c) => c === cn)]) // this is an array of arrays like this: [['weight', 42], ['noncolumn', -1]]
-        .map((el) => [el[0], el[1] === -1 ? null : el[1]]) //now like this [['weight', 42], ['noncolumn', null]]
-    ) as Record<string, number | null>;
-    Object.keys(this.utilityColumns).forEach((ucKey) => {
-      if (lodash.isNull(this.utilityColumns[ucKey])) {
-        console.log(
-          "WARNING: The following column is not in the raw data: ",
-          ucKey
-        );
-      }
-    });
   }
   sample(
     impVarColIndex: number,
@@ -178,7 +156,7 @@ export default class Data {
         }
       });
       //construct the sample
-      const sample = [] as (string | number | null)[][];
+      const sample = [] as Partial<Point>[];
       // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
       const weightsTotal = cumulativeWeights[
         cumulativeWeights.length - 1
@@ -190,7 +168,11 @@ export default class Data {
         );
         const selectedRow = subset[firstMatchIdx];
         if (selectedRow) {
-          sample.push(selectedRow);
+          sample.push({
+            response: selectedRow[impVarColIndex] as string,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            pid3: selectedRow[this.utilityColumns.pid3!] as string
+          });
         }
       }
       if (sample.length === sampleSize) {

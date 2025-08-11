@@ -1,6 +1,5 @@
-#python .venv (needed for data building script)
-
-.venv/
+# generated coordinate data files
+src/data/coordinates/
 
 # Logs
 logs
