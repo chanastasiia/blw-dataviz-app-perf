@@ -4,6 +4,57 @@ fieldset,
 input {
   all: unset;
 }
+.app {
+  position: relative;
+  background-color: var(--blw-whale);
+  height: 100vh;
+  max-height: 100vh;
+  overflow: clip;
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: start;
+  gap: 0.25rem;
+  width: 100vw;
+}
+
+.viztabs-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.viztabs-root.full-screen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(90vw, 900px);
+  max-height: 85vh;
+  overflow: auto;
+  background-color: var(--blw-gray200);
+  color: var(--color-text);
+  z-index: 9999;
+  border: 2px solid var(--color-text);
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.viztabs-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    0deg,
+    var(--color-brand),
+    var(--blw-gray100) 28%,
+    var(--blw-whale) 50%
+  );
+  opacity: 0.75;
+  z-index: 9998;
+}
 
 .viztabs-root {
   flex: 1 1 auto;

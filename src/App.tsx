@@ -24,8 +24,8 @@ function App() {
           {currentPageStore.currentPage === 1 && <IntroParagraph />}
           {currentPageStore.currentPage >= 2 && <VizGuidance />}
           {currentPageStore.currentPage >= 2 && <VizTabs />}
-          {userResponsesStore.numUserResponses.perf >= 3 &&
-            userResponsesStore.numUserResponses.imp >= 3 && <Controls />}
+          {userResponsesStore.numUserResponses.perf >= 1 &&
+            userResponsesStore.numUserResponses.imp >= 1 && <Controls />}
         </div>
       </UserResponsesStoreContext>
     </CurrentPageStoreContext>
