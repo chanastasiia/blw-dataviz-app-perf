@@ -12,7 +12,7 @@
   justify-content: start;
 }
 
-@media(height > 700px) {
+@media (height > 700px) {
   .viz-guidance {
     max-height: 15rem;
   }
