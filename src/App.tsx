@@ -1,4 +1,4 @@
-import "./App.css";
+/* import "./App.css";
 import * as _ from "lodash";
 import { useCurrentPage } from "./hooks/useCurrentPage";
 import { useUserResponses } from "./hooks/useUserResponses";
@@ -24,6 +24,45 @@ function App() {
           {currentPageStore.currentPage === 1 && <IntroParagraph />}
           {currentPageStore.currentPage >= 2 && <VizGuidance />}
           {currentPageStore.currentPage >= 2 && <VizTabs />}
+          {userResponsesStore.numUserResponses.perf >= 1 &&
+            userResponsesStore.numUserResponses.imp >= 1 && <Controls />}
+        </div>
+      </UserResponsesStoreContext>
+    </CurrentPageStoreContext>
+  );
+}
+
+export default App; 
+
+*/
+
+import "./App.css";
+import { useCurrentPage } from "./hooks/useCurrentPage";
+import { useUserResponses } from "./hooks/useUserResponses";
+import { CurrentPageStoreContext, UserResponsesStoreContext } from "./Contexts";
+import Header from "./components/Header";
+import Controls from "./components/controls/Controls";
+import UserPoll from "./components/questions/UserPoll";
+import IntroParagraph from "./components/IntroParagraph";
+import VizGuidance from "./components/viz/VizGuidance";
+import VizTabs from "./components/viz/VizTabs";
+
+function App() {
+  const currentPageStore = useCurrentPage();
+  const userResponsesStore = useUserResponses();
+
+  return (
+    <CurrentPageStoreContext value={currentPageStore}>
+      <UserResponsesStoreContext value={userResponsesStore}>
+        <div className="app">
+          <Header />
+
+          <UserPoll />
+
+          {currentPageStore.currentPage === 1 && <IntroParagraph />}
+          {currentPageStore.currentPage >= 2 && <VizGuidance />}
+          {currentPageStore.currentPage >= 2 && <VizTabs />}
+
           {userResponsesStore.numUserResponses.perf >= 1 &&
             userResponsesStore.numUserResponses.imp >= 1 && <Controls />}
         </div>

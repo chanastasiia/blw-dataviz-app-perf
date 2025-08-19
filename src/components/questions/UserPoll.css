@@ -1,37 +1,81 @@
 .poll-display {
+  display: flex;
+  flex-direction: column;
+  height: auto;
   overflow: clip;
   flex: 0 0 auto;
   position: relative;
-  top: 0;
   background-color: var(--blw-gray300);
   width: 100%;
 }
 
 .poll-display.open {
   flex: 1 1 auto;
-  overflow: auto;
+  height: 100vh;
   width: 100%;
 }
 
-
 .user-poll {
-  overflow: auto;
   font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  color: var(--color-text);
+  background-color: var(--blw-gray100);
+  border: 2px solid var(--blw-gray400);
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem;
+}
+
+.poll-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.sticky-principle {
+  font-style: italic;
+  color: var(--blw-whale800);
+  margin-top: 0.5rem;
+}
+
+.accordion-arrow {
+  transition: transform 0.2s ease;
+}
+
+.accordion-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
 .poll-item {
   background-color: var(--blw-gray100);
+  border: 2px solid var(--blw-gray400);
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: start;
   padding: 0.3rem;
   margin-top: 0.5rem;
-  transition: height 2s;
-  width: 100%;
+  transition: height 0.3s ease;
 }
 
 .poll-item p {
   font-style: italic;
+}
+
+.poll-subheading {
+  font-weight: bold;
+  margin: 0.5rem 0;
 }
